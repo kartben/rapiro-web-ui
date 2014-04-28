@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bootstrap 101 Template</title>
+
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+  </head>
+  <body>
+
+
+
+<!-- Main jumbotron for a primary marketing message or call to action -->
+    <div class="jumbotron">
+      <div class="container">
+        <h1>Rapiro over MQTT!</h1>
+        <p>This is a very simple web UI for controlling a Rapiro using MQTT over Websockets.</p>
+      </div>
+    </div>
+
+    <div class="container">
+      <!-- Example row of columns -->
+      <div class="row">
+        <div class="col-md-4">
+          <h2>STOP!</h2>
+          <p><a class="btn btn-default" href="#" role="button" onclick='message = new Messaging.Message("#M0"); message.destinationName = "benjamin/rapiro/command"; client.send(message); '>CLICK ME</a></p>
+        </div>
+        <div class="col-md-4">
+          <h2>Wave hands</h2>
+          <p><a class="btn btn-default" href="#" role="button" onclick='message = new Messaging.Message("#M5"); message.destinationName = "benjamin/rapiro/command"; client.send(message); '>CLICK ME</a></p>
+        </div>
+        <div class="col-md-4">
+          <h2>Walk</h2>
+          <p><a class="btn btn-default" href="#" role="button" onclick='message = new Messaging.Message("#M1"); message.destinationName = "benjamin/rapiro/command"; client.send(message); '>CLICK ME</a></p>
+        </div>
+      </div>
+
+    </div> <!-- /container -->
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="js/vendor/jquery-1.11.0.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/vendor/bootstrap.min.js"></script>
+
+    <script type="text/JavaScript" src="http://iot.eclipse.org/demo/js/mqttws31.js"></script>
+    <script>
+      client = new Messaging.Client("ws://iot.eclipse.org/ws", "rapiroweb" + new Date().getTime());
+      client.onConnectionLost = onConnectionLost;
+      client.onMessageArrived = onMessageArrived;
+      client.connect({
+          onSuccess: onConnect
+      });
+
+      function onConnect() {
+          // Once a connection has been made, make a subscription and send a message.
+          console.log("onConnect");
+      };
+
+      function onConnectionLost(responseObject) {
+          if (responseObject.errorCode !== 0) {
+            console.log("onConnectionLost:" + responseObject.errorMessage);
+            // TODO reconnect??
+          }
+      };
+
+      function onMessageArrived(message) {
+        // we don't expect anything, for now...
+      };
+    </script>
+</body>
+
+
+</html>
