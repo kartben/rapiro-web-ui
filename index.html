@@ -44,6 +44,11 @@
           <h2>Walk</h2>
           <p><a class="btn btn-default" href="#" role="button" onclick='message = new Messaging.Message("#M1"); message.destinationName = "benjamin/rapiro/command"; client.send(message); '>CLICK ME</a></p>
         </div>
+        <div class="col-md-4">
+          <h2>See thru my eyes</h2>
+          <img id="cam" src=""/>
+          <p><a class="btn btn-default" href="#" role="button" onclick='message = new Messaging.Message("TAKE_PICTURE"); message.destinationName = "benjamin/rapiro/command"; client.send(message); '>CLICK ME</a></p>
+        </div>
       </div>
 
     </div> <!-- /container -->
@@ -65,6 +70,7 @@
       function onConnect() {
           // Once a connection has been made, make a subscription and send a message.
           console.log("onConnect");
+          client.subscribe("benjamin/rapiro/pic");
       };
 
       function onConnectionLost(responseObject) {
@@ -75,7 +81,9 @@
       };
 
       function onMessageArrived(message) {
-        // we don't expect anything, for now...
+        console.log('Receiving an image')
+        var img = $("#cam");
+        img.attr('src', 'data:image/jpeg;base64,' + message.payloadString);
       };
     </script>
 </body>
